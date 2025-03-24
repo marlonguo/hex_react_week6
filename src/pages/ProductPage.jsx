@@ -2,9 +2,6 @@ import { useState, useEffect } from "react";
 
 import { getProducts, addCart } from "../utility/userApi";
 import Pagination from "../components/Pagination";
-import ProductModal from "../components/ProductModal";
-import Cart from "../components/Cart";
-import OrderForm from "../components/OrderForm";
 import { Link } from "react-router-dom";
 import Loading from "../components/Loading";
 
@@ -129,17 +126,6 @@ function ProductPage() {
 
       {/* pagination */}
       <Pagination pageInfo={pageInfo} setCurrentPage={setCurrentPage} />
-
-      {/* {product modal} */}
-      {/* <ProductModal
-        isOpen={isOpenProductModal}
-        setIsOpen={setIsOpenProductModal}
-        tempProduct={tempProduct}
-        handleAddCart={handleAddCart}
-        setCartState={setCartState}
-      /> */}
-
-      {/* <OrderForm setCartState={setCartState} /> */}
 
       {/* Screen Loading*/}
       {isScreenLoading && <Loading />}

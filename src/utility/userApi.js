@@ -86,3 +86,12 @@ export async function submitOrder(userInfo) {
     alert("送出訂單失敗");
   }
 }
+
+export async function checkUserLogin() {
+  try {
+    const res = await axios.post(`${BASE_URL}/v2/api/user/check`);
+    return res.data;
+  } catch (error) {
+    throw error;
+  }
+}

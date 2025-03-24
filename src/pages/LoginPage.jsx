@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
 
+import { useNavigate } from "react-router-dom";
+
+import { checkUserLogin } from "../utility/userApi";
+
 import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-function LoginPage({ setIsAuth }) {
+function LoginPage() {
   const token = document.cookie.replace(
     /(?:(?:^|.*;\s*)hexToken\s*\=\s*([^;]*).*$)|^.*$/,
     "$1"
@@ -15,24 +19,16 @@ function LoginPage({ setIsAuth }) {
     password: "",
   });
 
-  async function checkUserLogin() {
-    axios.defaults.headers.common["Authorization"] = token;
-    try {
-      const res = await axios.post(`${BASE_URL}/v2/api/user/check`);
-      return res.data;
-    } catch (error) {}
-  }
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log("Login");
-  }, []);
+  axios.defaults.headers.common["Authorization"] = token;
 
   useEffect(() => {
     if (token)
       (async function () {
         const res = await checkUserLogin();
         if (res.success) {
-          setIsAuth(true);
+          navigate("/admin/products");
         }
       })();
   }, []);
@@ -48,14 +44,10 @@ function LoginPage({ setIsAuth }) {
 
     try {
       const res = await axios.post(`${BASE_URL}/v2/admin/signin`, account);
-      //   console.log(res);
-
       const { token, expired } = res.data;
       document.cookie = `hexToken=${token}; expires=${new Date(expired)}`;
-
       axios.defaults.headers.common["Authorization"] = token;
-
-      setIsAuth(true);
+      navigate("/admin/products");
     } catch (error) {
       alert("登入失敗");
     }
